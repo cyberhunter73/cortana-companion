@@ -1,0 +1,4 @@
+# OS / editor stray files
+.DS_Store
+*.swp
+__pycache__/
