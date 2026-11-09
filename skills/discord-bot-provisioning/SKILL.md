@@ -47,4 +47,4 @@ Before relying on any discord.py call signature, check it directly: `python -c "
 
 ## Scoping conversation before building
 
-Before handing off to the build agent, nail down in a short brainstorming pass: server theme/name, full category/channel list, roles (and whether any reaction-role/verification gating is actually needed — for a small friends server, often not), and the exact copy for welcome/rules/announcements. Getting this approved up front avoids re-opening the provisioning script for cosmetic changes after it's already been tested live.
+Before writing the script, nail down in a short brainstorming pass: server theme/name, full category/channel list, roles (and whether any reaction-role/verification gating is actually needed — for a small friends server, often not), and the exact copy for welcome/rules/announcements. Getting this approved up front avoids re-opening the provisioning script for cosmetic changes after it's already been tested live.
