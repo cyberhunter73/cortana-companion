@@ -10,11 +10,9 @@ This repo does **not** vendor or copy any of that code. It only links to those p
 
 ## Demo video
 
-<video src="demo/cortana-capabilities-demo.mp4" controls width="720">
-  Your browser doesn't support inline video — <a href="demo/cortana-capabilities-demo.mp4">download/view it here</a> instead.
-</video>
+https://github.com/user-attachments/assets/afe3a368-ba12-4000-8309-9929b4330bf3
 
-A walkthrough of an assistant built on this pattern — memory, dashboard, calendar/bid tracking, chat/email integration, and the tool stack used to make the video itself. ([Direct link](demo/cortana-capabilities-demo.mp4) if the player above doesn't load.)
+A walkthrough of an assistant built on this pattern — memory, dashboard, calendar/bid tracking, chat/email integration, and the tool stack used to make the video itself. (Also available as a direct download: [demo/cortana-capabilities-demo.mp4](demo/cortana-capabilities-demo.mp4).)
 
 ## What's included
 
