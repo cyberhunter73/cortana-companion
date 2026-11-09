@@ -8,6 +8,14 @@ A companion repo for building your own "AI assistant with a persona" setup on to
 
 This repo does **not** vendor or copy any of that code. It only links to those projects and adds the pieces they don't cover: a fill-in persona template, a worked example of the Claude Code subagent pattern, and two reusable skills written up from real build experience. Everything here is template/example content — no real personal names, business names, credentials, or account IDs are included anywhere in this repo.
 
+## Demo video
+
+<video src="demo/cortana-capabilities-demo.mp4" controls width="720">
+  Your browser doesn't support inline video — <a href="demo/cortana-capabilities-demo.mp4">download/view it here</a> instead.
+</video>
+
+A walkthrough of an assistant built on this pattern — memory, dashboard, calendar/bid tracking, chat/email integration, and the tool stack used to make the video itself. ([Direct link](demo/cortana-capabilities-demo.mp4) if the player above doesn't load.)
+
 ## What's included
 
 ```
@@ -16,6 +24,7 @@ LICENSE
 README.md
 agents/README.md
 agents/example-specialist.md
+demo/cortana-capabilities-demo.mp4
 persona/CORTANA.md
 skills/avatar-video-automation/SKILL.md
 skills/discord-bot-provisioning/SKILL.md
