@@ -14,7 +14,7 @@ jobs:
       - name: Check for personal/business names, real IDs, and credentials
         run: |
           set +e
-          grep -rniE "REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED" --exclude-dir=.git .
+          grep -rniE "REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED" --exclude-dir=.git --exclude-dir=.github .
           if [ $? -eq 0 ]; then
             echo "::error::Banned term found in repo contents — see matches above."
             exit 1
