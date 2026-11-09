@@ -1,0 +1,22 @@
+name: Sanitization check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  banned-terms:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for personal/business names, real IDs, and credentials
+        run: |
+          set +e
+          grep -rniE "joseph|rubin|bond armory|arborworks|arbor grid|grumpy guy|jrubin760|agentmail\.to|the workbench|bid board|telekit|6fb0160ac40648d20cd98173472e4fbc|3cf9377b8742447fb4cf8c50628119be|efb7094e8b7343b4bd9a04e9a438ee1e|db80a1709f5c4bfc928b17520c5d5433|ec7a3f1d03b2433094a3ef5842ec91ef" --exclude-dir=.git .
+          if [ $? -eq 0 ]; then
+            echo "::error::Banned term found in repo contents — see matches above."
+            exit 1
+          fi
+          echo "Clean — no banned terms found."
