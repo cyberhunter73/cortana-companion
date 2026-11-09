@@ -2,3 +2,6 @@
 .DS_Store
 *.swp
 __pycache__/
+
+# Controller's local working copy of the implementation plan — not part of the published repo
+IMPLEMENTATION_PLAN.md
