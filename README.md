@@ -26,12 +26,14 @@ demo/cortana-capabilities-demo.mp4
 persona/CORTANA.md
 skills/avatar-video-automation/SKILL.md
 skills/discord-bot-provisioning/SKILL.md
+skills/free-vault-sync/SKILL.md
 ```
 
 - **`persona/CORTANA.md`** — a fill-in-the-blanks identity template for giving your assistant a name, personality, and voice/avatar configuration, with bracketed markers in place of real values and a worked (fictional) example.
 - **`agents/README.md`** and **`agents/example-specialist.md`** — an explanation of the Claude Code subagent (specialist) pattern, plus one complete, runnable example specialist you can copy and adapt.
 - **`skills/avatar-video-automation/SKILL.md`** — lessons learned building a custom HeyGen avatar/voice and wiring it into an unattended, scheduled video pipeline.
 - **`skills/discord-bot-provisioning/SKILL.md`** — lessons learned writing an idempotent discord.py script that provisions a server's categories, channels, roles, and permissions.
+- **`skills/free-vault-sync/SKILL.md`** walks your own Claude Code through syncing your Obsidian vault between a Windows computer and an Android phone with Syncthing, for free and with no account. It covers ignore rules that keep a git-backed vault clean, pairing, versioning, testing, and what to do with conflict files.
 
 ## How to use it
 
@@ -39,10 +41,11 @@ skills/discord-bot-provisioning/SKILL.md
 2. **Give your agent a persona.** Copy `persona/CORTANA.md` into your own identity/instruction file (e.g. your `CLAUDE.md` or whatever file your agent loads at startup), and fill in every bracketed `[FILL IN: ...]` marker with your own values — assistant name, avatar/voice IDs, personality, channels. Do not commit real IDs or credentials to a public repo.
 3. **Add subagents.** Read `agents/README.md` for how Claude Code discovers and routes to subagents, then copy `agents/example-specialist.md` into your own `.claude/agents/` folder (or `~/.claude/agents/` to make it available everywhere) as a starting point for your own specialists.
 4. **Add the skills.** Copy the `skills/avatar-video-automation/` and `skills/discord-bot-provisioning/` folders into your own `.claude/skills/` folder if either applies to what you're building.
+5. **Put your vault on your phone (optional).** Copy `skills/free-vault-sync/` into your `.claude/skills/` folder, then ask Claude Code to set up free vault sync. It walks you through it one step at a time on Windows and Android. iPhone has no official Syncthing app, so this step does not cover iPhone.
 
 ## Not included yet
 
-A guided installer wizard (something closer to `fullstack-agent`'s own setup flow, but for the persona/subagent/skills layer in this repo) is planned as a future addition. For now, the steps above are manual.
+The phone sync step now exists as a skill (`skills/free-vault-sync/`). A full guided installer for the persona, subagent, and skills layer in this repo, closer to `fullstack-agent`'s own setup flow, is still planned. For now, the other steps above are manual.
 
 ## License
 
