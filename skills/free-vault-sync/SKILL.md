@@ -65,7 +65,7 @@ Check it worked: the task state should be Running, and http://127.0.0.1:8384/res
 
 ## Step 3: lock the web page
 
-Have the user open http://127.0.0.1:8384, go to Actions, Settings, GUI, and set a username and password. Leave the listen address as `127.0.0.1:8384` so the page is only reachable from this computer. Then confirm a request without a login is refused (it should return 403).
+Have the user open http://127.0.0.1:8384, go to Actions, Settings, GUI, and set a username and password. Tell them to make up a new username and password just for this page. It is not an account and not a login they already have. They should not reuse a password from anywhere else. Leave the listen address as `127.0.0.1:8384` so the page is only reachable from this computer. Then confirm a request without a login is refused (it should return 403).
 
 ## Step 4: ignore rules, then share the vault
 
@@ -105,17 +105,46 @@ Get the computer's device ID for pairing with `syncthing cli show system` (the `
 
 ## Step 5: set up the phone
 
-Walk the user through these one at a time.
+Before the user picks up the phone, tell them where things stand, in plain words. Say all of this:
+
+- What the computer has now. Syncthing is running on the computer, and the vault is set up as a shared folder there. Nothing has gone to the phone yet.
+- The three names they will need on the phone. Read them out and tell the user to keep them on screen: the computer's device name, the Folder ID (`my-vault` in the example above, exactly as typed), and the folder name to use on the phone.
+- What happens next, in order. Install the apps, connect the phone to the computer, wait until both say Connected, bring the folder onto the phone, then open it in Obsidian.
+- What they will see. The phone app starts with an empty Devices list and an empty Folders list. Both are normal. The folder does not appear on the phone by itself. It shows up only after the two devices are connected and the folder is accepted on the phone.
+
+Then walk the user through these one at a time. After each one, ask what they see on the phone before going on.
 
 1. **Install two apps from the Play Store:** Obsidian, and Syncthing-Fork (`com.github.catfriend1.syncthingandroid`). The official Syncthing Android app was discontinued and archived in December 2024. Syncthing-Fork is the common replacement. It changed maintainers, so check its store listing and recent reviews before installing. Another option is "Syncthing for Android" by dev.benedek, a revival of the original app. Check the current state of both before recommending one.
 2. **Permissions.** Allow storage or "All files access", which is required. Location can be denied. Android only needs it to read the Wi-Fi network name, which the app uses for an optional "only on these networks" rule. That rule needs "Allow all the time" if the user wants it later.
 3. **Pair.** In Syncthing-Fork, open Devices, tap plus, and scan the QR code from the computer's web page (Actions, Show ID). Name the device.
-4. **Check the phone's ID before accepting.** The computer's web page shows a new-device banner. Read the waiting device with `syncthing cli show pending devices`, and have the user compare the first and last blocks of that ID with the one on the phone (Syncthing-Fork menu, Show device ID). Only then accept it, and tick the vault under Sharing.
-5. **Accept the folder on the phone.** The share offer arrives as an Android notification, not a popup in the app. If nothing shows up, notifications are probably turned off for the app. Set the folder path to `/storage/emulated/0/Documents/My Vault`. Documents is shared storage that both apps can reach. Leave the type as Send & Receive.
-6. **Add the same four ignore lines on the phone.** Open the folder in Syncthing-Fork, find Ignore patterns, and enter them. Ignore files are not synced between devices, so each side needs its own.
-7. **Open the vault in Obsidian.** Choose Open folder as vault, pick Device storage (not App storage, which Syncthing cannot reach), and select the vault folder itself. If it asks whether to trust the author and enable plugins, check the vault's `.obsidian/plugins/*/manifest.json` files first. Any plugin with `"isDesktopOnly": true` will not load on the phone. Plugins the user already runs on the computer are fine to trust.
-8. **Run conditions.** In Syncthing-Fork settings, under Run conditions, match what the user chose (for example Wi-Fi on, mobile data off, charging only).
-9. **Stop Android from killing it.** Set the app's battery use to Unrestricted. On Samsung phones, also check Battery, Background usage limits, and make sure the app is not in Sleeping or Deep sleeping apps. It may not appear in the "Never sleeping" picker once it is Unrestricted, which is fine.
+4. **Check the phone's ID before accepting.** The computer's web page shows a new-device banner. Read the waiting device with `syncthing cli show pending devices`, and have the user compare the first and last blocks of that ID with the one on the phone (Syncthing-Fork menu, Show device ID). Only then accept it, and tick the vault under Sharing. That tick is what offers the folder to the phone. Without it the phone is never told the folder exists.
+5. **Wait for Connected.** Do nothing with folders yet. Both sides must show the other device as connected. On the computer's web page the phone is listed under Remote Devices. In the phone app the computer is listed under Devices. Check it yourself too, with `syncthing cli show connections`. Give it two minutes. If either side still says Disconnected, stop and check these one at a time:
+   - Both devices are on the same Wi-Fi.
+   - The phone app is open, and its run conditions allow it to run right now. If it is set to run only while charging, plug the phone in or turn that off for now.
+   - The phone was accepted on the computer in the step above.
+   - The computer's ID on the phone matches the computer's real ID.
+
+   Do not go on until both show connected. No folder offer can reach the phone while they are disconnected, and the Folders list on the phone will stay empty. If it still will not connect after these checks, say so plainly and stop. Do not let the user keep trying things for a long time.
+6. **Get the folder onto the phone.** The phone's Folders list is empty at this point. That is normal. There are two ways to fill it. Try the first, and go to the second if the first shows nothing after a minute.
+
+   The usual way. The computer's offer arrives as an Android notification, not a popup in the app. Have the user pull down the notification shade and tap it. If nothing is there, check that notifications are allowed for the app, then check that the vault is ticked under Sharing for the phone on the computer.
+
+   The by-hand way. In the phone app, open Folders and tap plus. Tell the user the exact values before they start, and get these three things right:
+   - Folder ID. It must match the computer's letter for letter. It is the ID from step 4 (`my-vault` in the example), not the label. A different ID makes a separate folder that never syncs, with no error to say so.
+   - Folder location on the phone. It must be a new, empty folder inside Documents, for example `Documents/My Vault` (the full path is `/storage/emulated/0/Documents/My Vault`). The order matters here, so give it as separate steps:
+     1. Tap the folder location to open the directory picker.
+     2. Tap into Documents first. Check that the path at the top now ends in Documents.
+     3. Only then use the Create new folder box at the top of the picker. Type the folder name and confirm. The picker makes the new folder wherever you are at that moment, so using the box before going into Documents puts the folder in the wrong place.
+     4. Tap into the new folder and select it.
+
+     Do not pick Documents itself. Do not pick a folder that already has files in it. Documents is shared storage that both apps can reach. These same steps apply when the folder screen opens from the notification.
+   - Devices. Turn on the computer for this folder, so the phone shares it with the computer.
+
+   Either way, leave the type as Send & Receive. Then confirm it took: the folder shows on the phone, and `syncthing cli show connections` plus the computer's web page show the folder as Up to Date or Syncing, not Unshared.
+7. **Add the same four ignore lines on the phone.** Open the folder in Syncthing-Fork, find Ignore patterns, and enter them. Ignore files are not synced between devices, so each side needs its own.
+8. **Open the vault in Obsidian.** Give these in this order. First pick Device storage (not App storage, which Syncthing cannot reach). Then choose Open folder as vault. Then browse into Documents and select the vault folder itself. App screens change between versions, so if the phone shows these in a different order, follow the phone and keep the same three choices. If it asks whether to trust the author and enable plugins, check the vault's `.obsidian/plugins/*/manifest.json` files first. Any plugin with `"isDesktopOnly": true` will not load on the phone. Plugins the user already runs on the computer are fine to trust.
+9. **Run conditions.** In Syncthing-Fork settings, under Run conditions, match what the user chose (for example Wi-Fi on, mobile data off, charging only).
+10. **Stop Android from killing it.** Set the app's battery use to Unrestricted. On Samsung phones, also check Battery, Background usage limits, and make sure the app is not in Sleeping or Deep sleeping apps. It may not appear in the "Never sleeping" picker once it is Unrestricted, which is fine.
 
 ## Step 6: test
 
