@@ -12,11 +12,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check for personal/business names, real IDs, and credentials
+        env:
+          # Regex of banned terms lives in the repo secret BANNED_TERMS so the
+          # list itself is never published. Edit it with: gh secret set BANNED_TERMS
+          BANNED_TERMS: ${{ secrets.BANNED_TERMS }}
         run: |
+          if [ -z "$BANNED_TERMS" ]; then
+            echo "::warning::BANNED_TERMS secret unavailable (e.g. PR from a fork) — skipping scan."
+            exit 0
+          fi
           set +e
-          grep -rniE "REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED|REDACTED" --exclude-dir=.git --exclude-dir=.github .
-          if [ $? -eq 0 ]; then
-            echo "::error::Banned term found in repo contents — see matches above."
+          # Print file:line only — never the matched text, which would leak the term
+          # (secret masking only hides the whole secret value, not single terms).
+          hits=$(grep -rniE --exclude-dir=.git -- "$BANNED_TERMS" . | cut -d: -f1,2)
+          if [ -n "$hits" ]; then
+            echo "$hits"
+            echo "::error::Banned term found at the locations above."
             exit 1
           fi
           echo "Clean — no banned terms found."
